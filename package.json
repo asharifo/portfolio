@@ -1,0 +1,21 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.2.4"
+  },
+  "dependencies": {
+    "cannon": "^0.6.2",
+    "dat.gui": "^0.7.9",
+    "gsap": "^3.12.5",
+    "howler": "^2.2.4",
+    "three": "^0.164.1"
+  }
+}

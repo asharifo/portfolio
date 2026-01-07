@@ -11,6 +11,7 @@ export default class Physics
     this.modelsContainer = new THREE.Object3D()
 
     this.setWorld()
+    this.setMaterials()
     this.setFloor()
     this.setCar()
 
@@ -32,15 +33,29 @@ export default class Physics
     this.world.defaultContactMaterial.restitution = 0.2
   }
 
+  setMaterials() 
+  {
+    this.materials = {}
+    this.materials.items = {}
+    this.materials.contacts = {}
+
+    this.materials.items.floor = new CANNON.Material('floorMaterial')
+    this.materials.items.wheel = new CANNON.Material('wheelMaterial')
+
+    this.materials.contacts.floorWheel = new CANNON.ContactMaterial(this.materials.items.floor, this.materials.items.wheel, { friction: 0.3, restitution: 0, contactEquationStiffness: 1000 })
+    this.world.addContactMaterial(this.materials.contacts.floorWheel)
+  }
+
   setFloor()
   {
     this.floorBody = new CANNON.Body({
       mass: 0,
-      shape: new CANNON.Plane()
+      shape: new CANNON.Plane(),
+      material: this.materials.items.floor
     })
     this.world.addBody(this.floorBody)
 
-    const floorGeometry = new THREE.PlaneGeometry(200, 200, 1, 1)
+    const floorGeometry = new THREE.PlaneGeometry(10, 10, 1, 1)
     const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x222833 })
     const floorMesh = new THREE.Mesh(floorGeometry, floorMaterial)
     floorMesh.rotation.set(0, 0, 0)
@@ -140,7 +155,7 @@ export default class Physics
     for(const wheelInfo of this.car.vehicle.wheelInfos)
     {
       const shape = new CANNON.Cylinder(wheelInfo.radius, wheelInfo.radius, options.wheelHeight, 16)
-      const body = new CANNON.Body({ mass: options.wheelMass })
+      const body = new CANNON.Body({ mass: options.wheelMass, material: this.materials.items.wheel })
       const quaternion = new CANNON.Quaternion()
       quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), Math.PI / 2)
       body.type = CANNON.Body.KINEMATIC

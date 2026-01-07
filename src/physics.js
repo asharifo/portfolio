@@ -16,7 +16,7 @@ export default class Physics
 
     this.controls.on('action', (name) =>
     {
-      if(name === 'reset')
+      if (name === 'reset')
       {
         this.resetCar()
       }
@@ -154,7 +154,6 @@ export default class Physics
     this.modelsContainer.add(this.carMesh)
 
     const wheelGeometry = new THREE.CylinderGeometry(options.wheelRadius, options.wheelRadius, options.wheelHeight, 12)
-    wheelGeometry.rotateZ(Math.PI / 2)
     const wheelMaterial = new THREE.MeshStandardMaterial({ color: 0x1c1f25 })
     this.carWheelMeshes = []
 
